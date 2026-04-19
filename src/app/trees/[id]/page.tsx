@@ -159,21 +159,23 @@ export default function TreeDetailPage({ params }: { params: Promise<{ id: strin
 
       {/* Map mini */}
       <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 24px' }}>
-        <a
-          href={`https://www.google.com/maps/search/?api=1&query=${tree.latitude},${tree.longitude}`}
-          target="_blank" rel="noopener noreferrer"
-          className="glass-card"
-          style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 20px', marginBottom: 24, transition: 'all 0.25s' }}
-        >
-          <span style={{ fontSize: '1.5rem' }}>🗺️</span>
-          <div>
-            <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>Google マップで確認</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-              {tree.latitude.toFixed(5)}, {tree.longitude.toFixed(5)}
+        {tree.latitude != null && tree.longitude != null && (
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${tree.latitude},${tree.longitude}`}
+            target="_blank" rel="noopener noreferrer"
+            className="glass-card"
+            style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 20px', marginBottom: 24, transition: 'all 0.25s' }}
+          >
+            <span style={{ fontSize: '1.5rem' }}>🗺️</span>
+            <div>
+              <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>Google マップで確認</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                {tree.latitude.toFixed(5)}, {tree.longitude.toFixed(5)}
+              </div>
             </div>
-          </div>
-          <span style={{ marginLeft: 'auto', color: 'var(--text-muted)' }}>→</span>
-        </a>
+            <span style={{ marginLeft: 'auto', color: 'var(--text-muted)' }}>→</span>
+          </a>
+        )}
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
