@@ -25,6 +25,71 @@ function DesignationBadge({ designation }: { designation: string }) {
   );
 }
 
+function FunTags({ tree }: { tree: Tree }) {
+  const isMonster = tree.trunk_circumference_cm && tree.trunk_circumference_cm >= 1000;
+  const isFlowerLeaf = tree.species && (
+    tree.species.includes('サクラ') || tree.species.includes('桜') ||
+    tree.species.includes('イチョウ') || tree.species.includes('銀杏') ||
+    tree.species.includes('モミジ') || tree.species.includes('カエデ') || tree.species.includes('紅葉')
+  );
+  const isHistoryLegend = tree.age_years && tree.age_years >= 300;
+
+  if (!isMonster && !isFlowerLeaf && !isHistoryLegend) return null;
+
+  return (
+    <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 6, marginBottom: 8 }}>
+      {isMonster && (
+        <span style={{
+          fontSize: '0.62rem',
+          fontWeight: 'bold',
+          padding: '2px 6px',
+          borderRadius: 6,
+          background: 'rgba(251,191,36,0.12)',
+          color: '#f59e0b',
+          border: '1px solid rgba(251,191,36,0.25)',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 2
+        }}>
+          👑 超巨木 (モンスター)
+        </span>
+      )}
+      {isFlowerLeaf && (
+        <span style={{
+          fontSize: '0.62rem',
+          fontWeight: 'bold',
+          padding: '2px 6px',
+          borderRadius: 6,
+          background: 'rgba(244,63,94,0.12)',
+          color: '#f43f5e',
+          border: '1px solid rgba(244,63,94,0.25)',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 2
+        }}>
+          🌸 お花見・紅葉
+        </span>
+      )}
+      {isHistoryLegend && (
+        <span style={{
+          fontSize: '0.62rem',
+          fontWeight: 'bold',
+          padding: '2px 6px',
+          borderRadius: 6,
+          background: 'rgba(139,92,246,0.12)',
+          color: '#8b5cf6',
+          border: '1px solid rgba(139,92,246,0.25)',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 2
+        }}>
+          ⏳ 歴史の証人 (樹齢300年+)
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function TreeCard({ tree, isSelected, onClick }: TreeCardProps) {
   return (
     <div
@@ -50,6 +115,8 @@ export default function TreeCard({ tree, isSelected, onClick }: TreeCardProps) {
       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: 8 }}>
         📍 {tree.address}
       </div>
+
+      <FunTags tree={tree} />
 
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' as const }}>
         {tree.age_years && (
