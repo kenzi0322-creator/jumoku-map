@@ -612,7 +612,25 @@ export async function GET() {
       console.warn('Supabase fetched zero data or returned error, falling back to local mock data:', error);
       return NextResponse.json(MOCK_TREES);
     }
-    return NextResponse.json(data);
+
+    // データベース内のdescriptionが空または定型文の場合、豪華なMOCK_TREESの固有説明をマージする極上フォールバック！
+    const mergedData = data.map((tree: any) => {
+      const needsDescription = !tree.description || 
+                               tree.description.trim() === '' || 
+                               tree.description.includes('由緒ある日本の名木') || 
+                               tree.description.includes('心に深いやすらぎを与えてくれます');
+                               
+      if (needsDescription) {
+        // 名前かIDで一致するモックの固有説明を探す
+        const mockMatch = MOCK_TREES.find(t => t.name === tree.name || t.id === tree.id);
+        if (mockMatch && mockMatch.description) {
+          return { ...tree, description: mockMatch.description };
+        }
+      }
+      return tree;
+    });
+
+    return NextResponse.json(mergedData);
   } catch (err) {
     console.error('Supabase fetch exception, falling back to local mock data:', err);
     return NextResponse.json(MOCK_TREES);

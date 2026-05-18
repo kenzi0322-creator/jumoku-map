@@ -1056,7 +1056,11 @@ export default function Map({ trees, selectedMuni, onMuniClick, onMarkerClick, s
                   <div style={{ fontWeight: 'bold', color: '#15803d', fontSize: '0.64rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <span>📖</span> 歴史・エピソード
                   </div>
-                  {activeTree.description || '由緒ある日本の名木。悠久の歴史と豊かな緑が、心に深いやすらぎを与えてくれます。'}
+                  {activeTree.description || (() => {
+                    const speciesClean = (activeTree.species || '樹木').replace(/\s*\(.+?\)/g, '');
+                    const pref = activeTree.address?.match(/^(?:北海道|東京都|京都府|大阪府|.{2,3}県)/)?.[0] || '日本';
+                    return `${pref}の地に根を張る、美しい${speciesClean}の名木。その力強い佇まいと豊かな緑は、訪れる人々を優しく包み込み、悠久の時の流れを語りかける生命のシンボルです。現在、本樹木のさらなる歴史・エピソードの紹介文を募集中です。`;
+                  })()}
                 </div>
               </div>
             )}
